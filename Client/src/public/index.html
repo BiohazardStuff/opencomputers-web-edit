@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <script src="js/web-edit-client.js"></script>
+
+    <title>OC Web Edit</title>
+
+    <style>
+      body {
+        background: gainsboro;
+        color: #202020;
+      }
+
+      label {
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <script src="js/index.js"></script>
+
+    <h1>Hello World</h1>
+
+    <form>
+      <label for="access-code">Access Code</label>
+      <input id="access-code" />
+
+      <button type="submit" id="submit-button">Submit</button>
+    </form>
+
+    <script>
+      document
+        .getElementById("submit-button")
+        .onclick = event => {
+          const accessCode = document
+            .getElementById("access-code")
+            .value;
+
+          webEditClient.sendMessage(
+            "check_access_code",
+            {
+              accessCode,
+            }
+          );
+
+          event.preventDefault();
+        };
+    </script>
+  </body>
+</html>
