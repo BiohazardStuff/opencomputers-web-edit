@@ -1,0 +1,22 @@
+{
+  "name": "opencomputers_web_edit_server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "dev": "ts-node-dev src/index.ts"
+  },
+  "dependencies": {
+    "jsonwebtoken": "^8.5.1",
+    "ts-node": "^8.10.2",
+    "typescript": "^3.9.5",
+    "ws": "^7.3.0"
+  },
+  "devDependencies": {
+    "@types/jsonwebtoken": "^8.5.0",
+    "@types/node": "^14.0.11",
+    "@types/uuid": "^8.0.0",
+    "@types/ws": "^7.2.5",
+    "ts-node-dev": "^1.0.0-pre.44"
+  }
+}
