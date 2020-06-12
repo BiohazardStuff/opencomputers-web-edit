@@ -1,12 +1,13 @@
-import * as WebSocket from 'ws';
+import * as WebSocket from "ws";
 
-import ServerAction from '../constant/enums/server-action';
-import ErrorCode from '../constant/enums/error-code';
+import ErrorCode from "../constant/enums/error-code";
+import MessageAction from "../constant/enums/message-action";
 
 export default class SocketClient {
-  constructor(private _socketClient: WebSocket) {}
+  constructor(private _socketClient: WebSocket) {
+  }
 
-  public sendMessage(action: ServerAction, data: object = {}): void {
+  public sendMessage(action: MessageAction, data: object = {}): void {
     this._socketClient.send(JSON.stringify({
       action,
       data,
@@ -14,9 +15,12 @@ export default class SocketClient {
   }
 
   public sendError(message: string, code: number = ErrorCode.GENERAL): void {
-    this.sendMessage(ServerAction.ERROR, {
-      message,
-      code,
-    });
+    this.sendMessage(
+      MessageAction.ERROR,
+      {
+        message,
+        code,
+      }
+    );
   }
 }

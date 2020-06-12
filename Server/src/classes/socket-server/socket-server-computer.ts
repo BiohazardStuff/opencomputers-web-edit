@@ -1,25 +1,29 @@
 import SocketServer from "./socket-server";
-import ClientAction from "../../constant/enums/client-action";
 import { PayloadBase } from "../../constant/interfaces/client-payloads";
 import SocketServerManager from "../socket-server-manager";
-import { Handshake } from "../../modules/handshake";
+import { HandshakeCallbacks } from "../../modules/handshake";
 import SocketClient from "../socket-client";
 import Computer from "../container/computer";
+import MessageAction from "../../constant/enums/message-action";
+import DestinationServer from "../../constant/enums/destination-server";
 
 export default class SocketServerComputer extends SocketServer {
   private _computers: Map<string, Computer>;
-  private _clients: Map<string, SocketClient>;
   private _uuidByAccessCode: Map<string, string>;
 
   constructor(parent: SocketServerManager) {
     super(parent);
 
+    // Computers by UUID
     this._computers = new Map<string, Computer>();
-    this._clients = new Map<string, SocketClient>();
+
+    // Maps Computer UUID to Access Codes
     this._uuidByAccessCode = new Map<string, string>();
 
-    this.registerEventHandler(ClientAction.CONFIRM_CONNECTION, Handshake.onConfirmConnection);
-    this.registerEventHandler(ClientAction.AUTHENTICATE, Handshake.onAuthenticate);
+    this.registerEventPassthrough(MessageAction.PUSH_DIRECTORY, DestinationServer.WEB);
+
+    this.registerEventHandler(MessageAction.CONFIRM_CONNECTION, HandshakeCallbacks.onConfirmConnection);
+    this.registerEventHandler(MessageAction.AUTHENTICATE, HandshakeCallbacks.onAuthenticate);
   }
 
   // region Private Variable Access
@@ -46,18 +50,6 @@ export default class SocketServerComputer extends SocketServer {
     this._uuidByAccessCode.set(computer.accessCode, computer.uuid);
   }
 
-  public hasClient(uuid: string): boolean {
-    return this._clients.has(uuid);
-  }
-
-  public getClientByUUID(uuid:string): SocketClient|undefined {
-    return this._clients.get(uuid);
-  }
-
-  public addClient(client: SocketClient, uuid: string): void {
-    this._clients.set(uuid, client);
-  }
-
   // endregion
 
   protected onMessage(client: SocketClient, message: PayloadBase): void {
@@ -68,7 +60,7 @@ export default class SocketServerComputer extends SocketServer {
 
     // Messages from computers not yet in the list are only allowed to use the confirm path
     if (
-      message.action != ClientAction.CONFIRM_CONNECTION &&
+      message.action != MessageAction.CONFIRM_CONNECTION &&
       !this.hasComputer(message.data.uuid)
     ) {
       return client.sendError("Attempted to perform action on unconfirmed connection");

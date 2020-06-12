@@ -2,10 +2,10 @@ import { AuthenticatePayload, ConfirmConnectionPayload } from "../constant/inter
 import SocketClient from "../classes/socket-client";
 import Logger from "../classes/logger";
 import SocketServerComputer from "../classes/socket-server/socket-server-computer";
-import ServerAction from "../constant/enums/server-action";
 import Computer from "../classes/container/computer";
+import MessageAction from "../constant/enums/message-action";
 
-export class Handshake {
+export class HandshakeCallbacks {
   //region Message Event Handlers
 
   public static onConfirmConnection(server: SocketServerComputer, client: SocketClient, data: ConfirmConnectionPayload): void {
@@ -19,7 +19,7 @@ export class Handshake {
     if (server.hasComputer(data.uuid)) {
       Logger.info("Existing client reconnecting. Sending auth message");
 
-      return client.sendMessage(ServerAction.REQUEST_AUTH);
+      return client.sendMessage(MessageAction.REQUEST_AUTH);
     }
 
     // New client logic
@@ -33,7 +33,7 @@ export class Handshake {
     Logger.info("Sending access data to computer");
 
     client.sendMessage(
-      ServerAction.INITIALIZE,
+      MessageAction.INITIALIZE,
       {
         token: computer.authToken,
         code: computer.accessCode,
@@ -60,7 +60,7 @@ export class Handshake {
     Logger.info("Existing computer authenticated");
 
     client.sendMessage(
-      ServerAction.INITIALIZE,
+      MessageAction.INITIALIZE,
       {
         token: computer.authToken,
         code: computer.accessCode,

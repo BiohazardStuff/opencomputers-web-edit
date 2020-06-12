@@ -1,7 +1,7 @@
-import ClientAction from '../enums/client-action';
+import MessageAction from "../enums/message-action";
 
 export interface PayloadBase {
-  action: ClientAction,
+  action: MessageAction,
   data: any,
 }
 

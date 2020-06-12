@@ -1,24 +1,28 @@
 import * as http from "http";
 import { IncomingMessage, Server } from "http";
 import * as url from "url";
-import { Socket } from 'net';
+import { Socket } from "net";
 
-import SocketServerComputer from './socket-server/socket-server-computer';
-import SocketServerWeb from './socket-server/socket-server-web';
-import SocketServer from './socket-server/socket-server';
+import SocketServerComputer from "./socket-server/socket-server-computer";
+import SocketServerWeb from "./socket-server/socket-server-web";
+import SocketServer from "./socket-server/socket-server";
+import Computer from "./container/computer";
+import DestinationServer from "../constant/enums/destination-server";
+import SocketClient from "./socket-client";
+import { PayloadBase } from "../constant/interfaces/client-payloads";
 
 export default class SocketServerManager {
-  private _pathMap: Map<string, SocketServer>;
+  private _destinationMap: Map<DestinationServer, SocketServer>;
   private _socketServerComputer: SocketServerComputer;
   private _socketServerWeb: SocketServerWeb;
 
   constructor() {
-    this._pathMap = new Map<string, SocketServer>();
+    this._destinationMap = new Map<DestinationServer, SocketServer>();
   }
 
   private mapUpgradePaths(): void {
-    this._pathMap.set("computer", this._socketServerComputer);
-    this._pathMap.set("web", this._socketServerWeb);
+    this._destinationMap.set(DestinationServer.COMPUTER, this._socketServerComputer);
+    this._destinationMap.set(DestinationServer.WEB, this._socketServerWeb);
   }
 
   public start(port: number): void {
@@ -47,13 +51,46 @@ export default class SocketServerManager {
     }
 
     // Remove leading slash
-    const pathname = rawPathname.substr(1);
-    if (!this._pathMap.has(pathname)) {
+    const pathname: string = rawPathname.substr(1);
+    const destination: DestinationServer = pathname as DestinationServer;
+    if (!this._destinationMap.has(destination)) {
       return socket.destroy();
     }
 
-    const socketServer: SocketServer = this._pathMap.get(pathname)!;
+    const socketServer: SocketServer = this._destinationMap.get(destination)!;
 
     socketServer.handleUpgrade(request, socket, head);
   }
+
+  // region Cross Communication Methods
+
+  public passthroughMessage(client: SocketClient, destination: DestinationServer, message: PayloadBase) {
+    if (message.data.uuid === undefined) {
+      return client.sendError("Message missing uuid required for passthrouhg");
+    }
+
+    if (!this._destinationMap.has(destination)) {
+      return client.sendError(`Unable to determine destination for ${ destination.toString() }`);
+    }
+
+    const destinationServer: SocketServer = this._destinationMap.get(destination)!;
+
+    const destinationClient: SocketClient|undefined = destinationServer.getClientByUUID(message.data.uuid);
+    if (destinationClient === undefined) {
+      return client.sendError(`Unable to determine destination client for ${ message.data.uuid }`);
+    }
+
+    destinationClient.sendMessage(
+      message.action,
+      message.data
+    )
+
+    // destinationServer.emulateMessage(destinationClient, message);
+  }
+
+  public getComputerByAccessCode(accessCode: string): Computer|undefined {
+    return this._socketServerComputer.getComputerByAccessCode(accessCode);
+  }
+
+  // endregion
 }

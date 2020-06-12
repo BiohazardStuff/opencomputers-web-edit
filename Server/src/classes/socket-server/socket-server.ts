@@ -1,24 +1,46 @@
 import * as WebSocket from "ws";
 import { Server as WebSocketServer } from "ws";
 
-import ClientAction from '../../constant/enums/client-action';
-import SocketServerManager from '../socket-server-manager';
-import ServerAction from '../../constant/enums/server-action';
-import { PayloadBase } from '../../constant/interfaces/client-payloads';
-import { IncomingMessage } from 'http';
-import { Socket } from 'net';
-import SocketClient from '../socket-client';
-import Logger from '../logger';
+import SocketServerManager from "../socket-server-manager";
+import { PayloadBase } from "../../constant/interfaces/client-payloads";
+import { IncomingMessage } from "http";
+import { Socket } from "net";
+import SocketClient from "../socket-client";
+import Logger from "../logger";
+import DestinationServer from "../../constant/enums/destination-server";
+import MessageAction from "../../constant/enums/message-action";
 
 
 export default abstract class SocketServer {
-  private _eventHandlers: Map<ClientAction, Function>;
+  private _clients: Map<string, SocketClient>;
+  private _eventHandlers: Map<MessageAction, Function>;
+  private _eventPassthroughs: Map<MessageAction, DestinationServer>;
 
   protected _socketServer: WebSocketServer;
 
   protected constructor(protected _parent: SocketServerManager) {
-    this._eventHandlers = new Map<ClientAction, Function>();
+    // SocketClients by Computer UUID
+    this._clients = new Map<string, SocketClient>();
+
+    this._eventHandlers = new Map<MessageAction, Function>();
+    this._eventPassthroughs = new Map<MessageAction, DestinationServer>();
   }
+
+  // region Private Variable Access
+
+  public hasClient(uuid: string): boolean {
+    return this._clients.has(uuid);
+  }
+
+  public getClientByUUID(uuid: string): SocketClient|undefined {
+    return this._clients.get(uuid);
+  }
+
+  public addClient(client: SocketClient, uuid: string): void {
+    this._clients.set(uuid, client);
+  }
+
+  // endregion
 
   public register(): void {
     this._socketServer = new WebSocketServer({
@@ -28,7 +50,7 @@ export default abstract class SocketServer {
     this._socketServer.on(
       "connection",
       this.onConnectionInternal.bind(this)
-    )
+    );
   }
 
   public handleUpgrade(request: IncomingMessage, socket: Socket, head: Buffer) {
@@ -37,14 +59,18 @@ export default abstract class SocketServer {
     });
   }
 
-  // region Event Handler Logic
-
-  protected registerEventHandler(clientAction: ClientAction, callback: Function): void {
-    this._eventHandlers.set(clientAction, callback);
+  protected static parseRawMessage(rawMessage: string): PayloadBase {
+    return JSON.parse(rawMessage);
   }
 
-  protected hasEventHandler(clientAction: ClientAction): boolean {
-    return this._eventHandlers.has(clientAction);
+  // region Event Logic
+
+  protected registerEventHandler(action: MessageAction, callback: Function): void {
+    this._eventHandlers.set(action, callback);
+  }
+
+  protected hasEventHandler(action: MessageAction): boolean {
+    return this._eventHandlers.has(action);
   }
 
   protected callEventHandler(client: SocketClient, message: PayloadBase): void {
@@ -57,10 +83,25 @@ export default abstract class SocketServer {
 
   protected callEventHandlerOrError(client: SocketClient, message: PayloadBase): void {
     if (!this.hasEventHandler(message.action)) {
-      return client.sendError(`Unknown action: ${message.action}`);
+      return client.sendError(`Unknown action: ${ message.action }`);
     }
 
     this.callEventHandler(client, message);
+  }
+
+  protected registerEventPassthrough(action: MessageAction, destination: DestinationServer): void {
+    this._eventPassthroughs.set(
+      action,
+      destination
+    );
+  }
+
+  protected hasEventPassthrough(action: MessageAction): boolean {
+    return this._eventPassthroughs.has(action);
+  }
+
+  protected getEventPassthrough(action: MessageAction): DestinationServer|undefined {
+    return this._eventPassthroughs.get(action);
   }
 
   // endregion
@@ -74,7 +115,10 @@ export default abstract class SocketServer {
 
     webSocketClient.on(
       "message",
-      rawMessage => this.onMessageInternal(client, rawMessage.toString())
+      rawMessage => this.onMessageInternal(
+        client,
+        SocketServer.parseRawMessage(rawMessage.toString())
+      )
     );
 
     webSocketClient.on(
@@ -84,21 +128,27 @@ export default abstract class SocketServer {
 
     this.onConnection(client);
 
-    client.sendMessage(ServerAction.CONNECTED);
+    client.sendMessage(MessageAction.CONNECTED);
   }
 
-  protected onConnection(client: SocketClient): void {}
+  protected onConnection(_client: SocketClient): void {
+  }
 
   protected static onClose(): void {
-    Logger.info('Client Disconnected');
+    Logger.info("Client Disconnected");
   }
 
-  private onMessageInternal(client: SocketClient, rawMessage: string): void {
-    Logger.info(`Received: ${ rawMessage }`);
+  private onMessageInternal(client: SocketClient, message: PayloadBase): void {
+    Logger.info(`Received: ${ JSON.stringify(message) }`);
 
-    const message: PayloadBase = JSON.parse(rawMessage.toString());
     if (message.action == undefined) {
       return;
+    }
+
+    if (this.hasEventPassthrough(message.action)) {
+      const destination: DestinationServer = this.getEventPassthrough(message.action)!;
+
+      return this._parent.passthroughMessage(client, destination, message);
     }
 
     this.onMessage(client, message);
