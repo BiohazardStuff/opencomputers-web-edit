@@ -21,6 +21,7 @@ export default class SocketServerComputer extends SocketServer {
     this._uuidByAccessCode = new Map<string, string>();
 
     this.registerEventPassthrough(MessageAction.PUSH_DIRECTORY, DestinationServer.WEB);
+    this.registerEventPassthrough(MessageAction.PUSH_FILE, DestinationServer.WEB);
 
     this.registerEventHandler(MessageAction.CONFIRM_CONNECTION, HandshakeHandlers.onConfirmConnection);
     this.registerEventHandler(MessageAction.AUTHENTICATE, HandshakeHandlers.onAuthenticate);

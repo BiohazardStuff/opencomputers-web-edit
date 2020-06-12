@@ -9,6 +9,8 @@ enum MessageAction {
   CHECK_ACCESS_CODE = "check_access_code",
   PULL_DIRECTORY = "pull_directory",
   PUSH_DIRECTORY = "push_directory",
+  PULL_FILE = "pull_file",
+  PUSH_FILE = "push_file",
 }
 
 export default MessageAction;

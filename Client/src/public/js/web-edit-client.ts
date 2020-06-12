@@ -48,6 +48,8 @@ class WebEditClient {
     console.log("Websocket message received: ", message);
     WebEditClient.logMessage(event.data);
 
+    const data: any = message.data;
+
     switch (message.action) {
       case "connected":
         console.log("Received connection confirmation from server");
@@ -59,8 +61,18 @@ class WebEditClient {
           break;
         }
 
-        this.computerUUID = message.data.uuid;
-        uuidElement.innerHTML = message.data.uuid;
+        this.computerUUID = data.uuid;
+        uuidElement.innerHTML = data.uuid;
+
+        break;
+      case "push_file":
+          const fileContentElement: HTMLElement|null = document.getElementById("file-content");
+          if (fileContentElement === null) {
+            return;
+          }
+
+          const fileContentTextarea: HTMLTextAreaElement = fileContentElement as HTMLTextAreaElement;
+          fileContentTextarea.value = data.content;
 
         break;
       case "error":

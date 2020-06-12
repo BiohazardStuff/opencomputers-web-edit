@@ -17,6 +17,12 @@
       label {
         font-weight: bold;
       }
+
+      #file-content {
+        width: 100%;
+        height: 200px;
+        resize: vertical;
+      }
     </style>
   </head>
   <body>
@@ -36,7 +42,18 @@
       <label for="directory-path">Directory</label>
       <input id="directory-path" value="/" />
       <button type="submit" id="submit-directory-path">Pull</button>
+
+      <br>
+
+      <label for="file-path">File</label>
+      <input id="file-path" />
+      <button type="submit" id="submit-file-path">Pull</button>
     </form>
+
+    <div>
+      <label for="file-content">File Content</label>
+      <textarea readonly id="file-content"></textarea>
+    </div>
 
     <div id="message-log"></div>
 
@@ -67,6 +84,24 @@
 
           webEditClient.sendMessage(
             "pull_directory",
+            {
+              uuid: webEditClient.computerUUID,
+              path,
+            }
+          );
+
+          event.preventDefault();
+        };
+
+      document
+        .getElementById("submit-file-path")
+        .onclick = event => {
+          const path = document
+            .getElementById("file-path")
+            .value;
+
+          webEditClient.sendMessage(
+            "pull_file",
             {
               uuid: webEditClient.computerUUID,
               path,

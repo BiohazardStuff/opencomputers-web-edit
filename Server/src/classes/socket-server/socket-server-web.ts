@@ -10,6 +10,7 @@ export default class SocketServerWeb extends SocketServer {
     super(parent);
 
     this.registerEventPassthrough(MessageAction.PULL_DIRECTORY, DestinationServer.COMPUTER);
+    this.registerEventPassthrough(MessageAction.PULL_FILE, DestinationServer.COMPUTER);
 
     this.registerEventHandler(MessageAction.CHECK_ACCESS_CODE, WebHandlers.onCheckAccessCode);
   }
