@@ -24,16 +24,25 @@
 
     <h1>Hello World</h1>
 
+    <div><strong>Computer UUID:</strong> <span id="computer-uuid"></span></div>
+
     <form>
       <label for="access-code">Access Code</label>
       <input id="access-code" />
+      <button type="submit" id="submit-access-code">Submit</button>
 
-      <button type="submit" id="submit-button">Submit</button>
+      <br>
+
+      <label for="directory-path">Directory</label>
+      <input id="directory-path" value="/" />
+      <button type="submit" id="submit-directory-path">Pull</button>
     </form>
+
+    <div id="message-log"></div>
 
     <script>
       document
-        .getElementById("submit-button")
+        .getElementById("submit-access-code")
         .onclick = event => {
           const accessCode = document
             .getElementById("access-code")
@@ -43,6 +52,24 @@
             "check_access_code",
             {
               accessCode,
+            }
+          );
+
+          event.preventDefault();
+        };
+
+      document
+        .getElementById("submit-directory-path")
+        .onclick = event => {
+          const path = document
+            .getElementById("directory-path")
+            .value;
+
+          webEditClient.sendMessage(
+            "pull_directory",
+            {
+              uuid: webEditClient.computerUUID,
+              path,
             }
           );
 

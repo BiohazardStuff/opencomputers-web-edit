@@ -1,6 +1,8 @@
 class WebEditClient {
   private _socketClient: WebSocket;
 
+  public computerUUID: string;
+
   constructor() {}
 
   public connect(url: string): void {
@@ -20,6 +22,18 @@ class WebEditClient {
     }));
   }
 
+  private static logMessage(message: string): void {
+    const logElement: HTMLElement|null = document.getElementById("message-log");
+    if (logElement === null) {
+      return;
+    }
+
+    const messageElement: HTMLParagraphElement = document.createElement("p");
+    messageElement.innerHTML = message;
+
+    logElement.append(messageElement);
+  }
+
   private static onOpen(): void {
     console.log("Websocket connection opened");
   }
@@ -32,10 +46,24 @@ class WebEditClient {
     const message = JSON.parse(event.data);
 
     console.log("Websocket message received: ", message);
+    WebEditClient.logMessage(event.data);
 
     switch (message.action) {
       case "connected":
         console.log("Received connection confirmation from server");
+
+        break;
+      case "confirm_access_code":
+        const uuidElement: HTMLElement|null = document.getElementById("computer-uuid");
+        if (uuidElement === null) {
+          break;
+        }
+
+        this.computerUUID = message.data.uuid;
+        uuidElement.innerHTML = message.data.uuid;
+
+        break;
+      case "error":
 
         break;
     }
