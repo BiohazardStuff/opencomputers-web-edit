@@ -5,7 +5,7 @@ import SocketServerComputer from "../classes/socket-server/socket-server-compute
 import Computer from "../classes/container/computer";
 import MessageAction from "../constant/enums/message-action";
 
-export class HandshakeCallbacks {
+export class HandshakeHandlers {
   //region Message Event Handlers
 
   public static onConfirmConnection(server: SocketServerComputer, client: SocketClient, data: ConfirmConnectionPayload): void {

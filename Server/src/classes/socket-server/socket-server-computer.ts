@@ -1,7 +1,7 @@
 import SocketServer from "./socket-server";
 import { PayloadBase } from "../../constant/interfaces/client-payloads";
 import SocketServerManager from "../socket-server-manager";
-import { HandshakeCallbacks } from "../../modules/handshake";
+import { HandshakeHandlers } from "../../modules/handshake-handlers";
 import SocketClient from "../socket-client";
 import Computer from "../container/computer";
 import MessageAction from "../../constant/enums/message-action";
@@ -22,8 +22,8 @@ export default class SocketServerComputer extends SocketServer {
 
     this.registerEventPassthrough(MessageAction.PUSH_DIRECTORY, DestinationServer.WEB);
 
-    this.registerEventHandler(MessageAction.CONFIRM_CONNECTION, HandshakeCallbacks.onConfirmConnection);
-    this.registerEventHandler(MessageAction.AUTHENTICATE, HandshakeCallbacks.onAuthenticate);
+    this.registerEventHandler(MessageAction.CONFIRM_CONNECTION, HandshakeHandlers.onConfirmConnection);
+    this.registerEventHandler(MessageAction.AUTHENTICATE, HandshakeHandlers.onAuthenticate);
   }
 
   // region Private Variable Access

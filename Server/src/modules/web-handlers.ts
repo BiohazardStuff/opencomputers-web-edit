@@ -5,7 +5,7 @@ import SocketServerWeb from "../classes/socket-server/socket-server-web";
 import Computer from "../classes/container/computer";
 import MessageAction from "../constant/enums/message-action";
 
-export default class WebCallbacks {
+export default class WebHandlers {
   public static onCheckAccessCode(server: SocketServerWeb, client: SocketClient, data: CheckAccessCodePayload): void {
     Logger.info(`Web client checking with access code ${ data.accessCode }`);
 
