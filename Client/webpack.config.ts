@@ -26,7 +26,7 @@ const config: Configuration = {
   mode: "development",
   devtool: "inline-source-map",
 
-  entry: "./src/client/index.tsx",
+  entry: "./src/index.tsx",
   output: {
     path: path.resolve(__dirname, "dist"),
     publicPath: "/",
@@ -99,8 +99,8 @@ const config: Configuration = {
 
   plugins: [
     new HtmlWebpackPlugin({
-      template: "src/client/index.html",
-      favicon: "src/client/favicon.ico",
+      template: "src/index.html",
+      favicon: "src/favicon.ico",
     })
   ],
 

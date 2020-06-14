@@ -22,8 +22,8 @@
   },
   "include": [
     "src/typings/*",
-    "src/client/**/*.ts",
-    "src/client/**/*.tsx"
+    "src/**/*.ts",
+    "src/**/*.tsx"
   ],
   "exclude": [
     "node_modules",
