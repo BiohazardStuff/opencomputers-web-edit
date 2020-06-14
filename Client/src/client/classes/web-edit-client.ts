@@ -1,9 +1,7 @@
-class WebEditClient {
+export default class WebEditClient {
   private _socketClient: WebSocket;
 
   public computerUUID: string;
-
-  constructor() {}
 
   public connect(url: string): void {
     this._socketClient = new WebSocket(url);
@@ -14,11 +12,18 @@ class WebEditClient {
     this._socketClient.onmessage = event => this.onMessage(event);
   }
 
-  public sendMessage(action: string, data: object = {}, success: boolean = true): void {
+  public sendMessage(action: string, data: any = {}): void {
+    if (action !== "check_access_code") {
+      if (this.computerUUID === undefined) {
+        return WebEditClient.logMessage(`Client attempted to execute ${ action } on an unconfirmed connection`);
+      }
+
+      data.uuid = this.computerUUID;
+    }
+
     this._socketClient.send(JSON.stringify({
       action,
       data,
-      success,
     }));
   }
 
@@ -66,13 +71,13 @@ class WebEditClient {
 
         break;
       case "push_file":
-          const fileContentElement: HTMLElement|null = document.getElementById("file-content");
-          if (fileContentElement === null) {
-            return;
-          }
+        const fileContentElement: HTMLElement|null = document.getElementById("file-content");
+        if (fileContentElement === null) {
+          return;
+        }
 
-          const fileContentTextarea: HTMLTextAreaElement = fileContentElement as HTMLTextAreaElement;
-          fileContentTextarea.value = data.content;
+        const fileContentTextarea: HTMLTextAreaElement = fileContentElement as HTMLTextAreaElement;
+        fileContentTextarea.value = data.content;
 
         break;
       case "error":

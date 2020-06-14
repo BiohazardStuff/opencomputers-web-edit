@@ -9,6 +9,7 @@
     "types": [
       "node"
     ],
+    "jsx": "react",
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
@@ -20,9 +21,12 @@
     "strictPropertyInitialization": false
   },
   "include": [
-    "src/public/**/*.ts"
+    "src/typings/*",
+    "src/client/**/*.ts",
+    "src/client/**/*.tsx"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "dist"
   ]
 }

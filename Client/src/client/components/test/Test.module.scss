@@ -1,0 +1,29 @@
+.test {
+  background-color: gainsboro;
+  color: #202020;
+}
+
+.labeled-field {
+  background: #d5d5d5;
+  padding: 5px;
+  border: 1px solid #a7a7a7;
+
+  label {
+    font-weight: bold;
+    margin-right: 5px;
+  }
+}
+
+.file-content {
+  width: 100%;
+  height: 200px;
+  resize: vertical;
+}
+
+.message-log {
+  margin-top: 5px;
+
+  p {
+    margin: 2px 0;
+  }
+}
