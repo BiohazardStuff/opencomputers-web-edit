@@ -1,3 +1,0 @@
-# Ignore compiled Typescript files
-client/**/*.js
-client/**/*.js.map
