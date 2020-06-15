@@ -1,7 +1,8 @@
 export default class WebEditClient {
   private _socketClient: WebSocket;
+  private _computerUUID: string;
 
-  public computerUUID: string;
+  public onUUIDChanged: (newUUID: string|undefined, oldUUID: string|undefined) => void;
 
   public connect(url: string): void {
     this._socketClient = new WebSocket(url);
@@ -12,13 +13,31 @@ export default class WebEditClient {
     this._socketClient.onmessage = event => this.onMessage(event);
   }
 
+  // region Private Access
+
+  public getUUID(): string|undefined {
+    return this._computerUUID;
+  }
+
+  public setUUID(uuid: string): void {
+    const oldUUID: string|undefined = this._computerUUID;
+
+    this._computerUUID = uuid;
+
+    if (this.onUUIDChanged !== undefined) {
+      this.onUUIDChanged(this._computerUUID, oldUUID);
+    }
+  }
+
+  // endregion
+
   public sendMessage(action: string, data: any = {}): void {
     if (action !== "check_access_code") {
-      if (this.computerUUID === undefined) {
+      if (this.getUUID() === undefined) {
         return WebEditClient.logMessage(`Client attempted to execute ${ action } on an unconfirmed connection`);
       }
 
-      data.uuid = this.computerUUID;
+      data.uuid = this.getUUID();
     }
 
     this._socketClient.send(JSON.stringify({
@@ -61,13 +80,7 @@ export default class WebEditClient {
 
         break;
       case "confirm_access_code":
-        const uuidElement: HTMLElement|null = document.getElementById("computer-uuid");
-        if (uuidElement === null) {
-          break;
-        }
-
-        this.computerUUID = data.uuid;
-        uuidElement.innerHTML = data.uuid;
+        this.setUUID(data.uuid);
 
         break;
       case "push_file":

@@ -1,0 +1,21 @@
+@import "src/css/theme";
+
+.page-header {
+  background: $background-color;
+  display: flex;
+  height: 3em;
+}
+
+.brand-text {
+  color: $primary-color;
+  font-size: 1.5em;
+  font-weight: 600;
+
+  margin-left: 0.5em;
+  margin-right: 3em;
+}
+
+.header-text {
+  color: $secondary-color;
+  font-size: 1.1em;
+}

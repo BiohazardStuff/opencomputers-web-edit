@@ -1,0 +1,42 @@
+@import "theme";
+
+$element-height: 2em;
+
+button {
+  border: none;
+  background: $primary-color;
+  color: white;
+  cursor: pointer;
+  height: $element-height;
+  padding: 0 10px;
+  transition: background .3s ease;
+
+  &:focus {
+    outline: none;
+  }
+
+  &:hover {
+    background: $secondary-color;
+  }
+
+  &:disabled {
+    color: gainsboro;
+    cursor: default;
+    background: $background-alt-color;
+  }
+}
+
+input {
+  border: 1px solid $primary-color;
+  height: $element-height;
+  padding: 0.5em;
+
+  &:focus {
+    outline: none;
+    border-color: $secondary-color;
+  }
+
+  &.inline-button {
+    border-right: none;
+  }
+}

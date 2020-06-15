@@ -1,10 +1,11 @@
+@import 'src/css/theme';
+
 .test {
-  background-color: gainsboro;
-  color: #202020;
+  background: $background-light-color;
+  color: $foreground-color;
 }
 
 .labeled-field {
-  background: #d5d5d5;
   padding: 5px;
   border: 1px solid #a7a7a7;
 

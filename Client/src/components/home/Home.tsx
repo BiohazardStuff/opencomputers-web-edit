@@ -1,13 +1,15 @@
-import { Component } from "react";
+import { Component, ReactNode } from "react";
 import * as React from "react";
+
+import PageHeader from "../page-header/PageHeader";
 
 import * as styles from "./Home.module.scss";
 
 export default class Home extends Component<any, any> {
-  public render() {
+  public render(): ReactNode {
     return (
       <div className={ styles.home }>
-        <h1 className={ styles.homeClass }>Home</h1>
+        <PageHeader headerText="Home" />
       </div>
     );
   }
