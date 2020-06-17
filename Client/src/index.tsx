@@ -7,5 +7,5 @@ import "./css/base.scss";
 
 ReactDOM.render(
   <App />,
-  document.getElementById("app")
+  document.getElementById("root")
 );

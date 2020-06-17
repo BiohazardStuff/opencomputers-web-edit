@@ -4,27 +4,33 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-} from "react-router-dom"
+} from "react-router-dom";
 
 import Home from "../home/Home";
 import Test from "../test/Test";
+import AppBody from "../app-body/AppBody";
+import PageHeader from "../page-header/PageHeader";
 
 export default class App extends Component<any, any> {
   render() {
     return (
-      <Router>
-        <div id="router">
-          <Switch>
-            <Route path="/test">
-              <Test />
-            </Route>
+      <div id="app">
+        <PageHeader headerText="[ nav here ]" />
 
-            <Route path="/">
-              <Home />
-            </Route>
-          </Switch>
-        </div>
-      </Router>
+        <AppBody>
+          <Router>
+            <Switch>
+              <Route path="/test">
+                <Test />
+              </Route>
+
+              <Route path="/">
+                <Home />
+              </Route>
+            </Switch>
+          </Router>
+        </AppBody>
+      </div>
     );
   }
 }

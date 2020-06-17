@@ -2,7 +2,6 @@ import { Component, ComponentProps, ReactNode, RefObject } from "react";
 import * as React from "react";
 
 import WebEditClient from "../../classes/web-edit-client";
-import PageHeader from "../page-header/PageHeader";
 
 import * as styles from "./Test.module.scss";
 
@@ -31,8 +30,6 @@ export default class Test extends Component<any, any> {
   public render(): ReactNode {
     return (
       <div className={ styles.test }>
-        <PageHeader headerText="Test Tool" />
-
         <div className={ styles.labeledField }>
           <label>Computer UUID</label>
           <span id="computer-uuid" ref={ this._uuidOutput } />

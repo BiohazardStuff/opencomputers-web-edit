@@ -1,0 +1,34 @@
+@import "src/css/theme";
+
+html, body, #root, #app {
+  min-height: 100vh;
+}
+
+#app-body, #app-body > div {
+  height: 100%;
+}
+
+#app {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  // Accommodate header + 0.5em spacing top and bottom
+  padding: 3.5em 0 0.5em;
+
+  background: $background-color;
+  color: $foreground-color;
+}
+
+#app-body {
+  // Stretch to fill available space
+  flex: 1;
+
+  background: #ffffff;
+  border-radius: 2px;
+  padding: 10px;
+
+  // Maintain reasonable with
+  width: 100%;
+  max-width: 1176px;
+}

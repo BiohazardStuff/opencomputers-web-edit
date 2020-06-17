@@ -2,6 +2,7 @@
 
 @import "elements";
 @import "interface";
+@import "layout";
 
 *, *::before, *::after {
   box-sizing: border-box;
@@ -12,9 +13,4 @@
 
 body {
   margin: 0;
-}
-
-html, body, #app, #router, #router > div {
-  height: 100vh;
-  max-height: 100vh;
 }
