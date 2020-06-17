@@ -94,6 +94,10 @@ const config: Configuration = {
           },
         ],
       },
+      {
+        test: /\.(png|jpe?g|gif)$/,
+        loader: "file-loader",
+      },
     ],
   },
 

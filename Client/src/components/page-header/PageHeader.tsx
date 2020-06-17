@@ -5,6 +5,7 @@ import { Link, RouteComponentProps, withRouter } from "react-router-dom";
 import VerticalAlign from "../vertical-align/VerticalAlign";
 
 import * as styles from "./PageHeader.module.scss";
+import logo from "../../img/logo_flat.png";
 
 interface NavItem {
   label: string,
@@ -26,6 +27,10 @@ class PageHeader extends Component<RouteComponentProps<any>> {
   public render(): ReactNode {
     return (
       <div className={ styles.pageHeader }>
+        <VerticalAlign>
+          <img src={ logo } alt="OpenComputers Web Edit Logo" className={ styles.brandLogo } />
+        </VerticalAlign>
+
         <VerticalAlign>
           <div className={ styles.brandText }>OpenComputers Web Edit</div>
         </VerticalAlign>

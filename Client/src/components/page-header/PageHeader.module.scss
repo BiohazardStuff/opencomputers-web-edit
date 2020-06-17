@@ -11,13 +11,16 @@
   left: 0;
 }
 
+.brand-logo {
+  padding: 0 5px;
+}
+
 .brand-text {
   color: $brand-foreground-color;
   font-size: 1.5em;
   font-weight: 600;
 
-  margin-left: 0.5em;
-  margin-right: 3em;
+  padding: 0 2.5em 0 0.5em;
 }
 
 .header-navigation {
