@@ -7,13 +7,21 @@ import { Configuration, RuleSetQuery } from "webpack";
 import * as HtmlWebpackPlugin from "html-webpack-plugin";
 
 function cssLoaderOptions(modules: boolean, sourceMap: boolean): RuleSetQuery {
-  return {
-    modules,
+  const options: RuleSetQuery = {
     sourceMap,
 
     importLoaders: 2,
     localsConvention: "camelCaseOnly",
   };
+
+  // todo: this will need an env check to switch between setting the pattern below for dev vs true for prod
+  if (modules) {
+    options.modules = {
+      localIdentName: "[path][name]__[local]",
+    };
+  }
+
+  return options;
 }
 
 function sassLoaderOptions(sourceMap: boolean): RuleSetQuery {
