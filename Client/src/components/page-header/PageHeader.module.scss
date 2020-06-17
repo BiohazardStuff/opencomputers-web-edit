@@ -20,7 +20,23 @@
   margin-right: 3em;
 }
 
-.header-text {
+.header-navigation {
+  height: 100%;
+}
+
+.header-navigation-item {
   color: $brand-foreground-color;
+  display: inline-block;
   font-size: 1.1em;
+  height: 100%;
+  padding: 0 1em;
+  text-decoration: none;
+
+  &:hover {
+    background: $primary-color;
+  }
+}
+
+.header-navigation-item-current {
+  background: $primary-color;
 }

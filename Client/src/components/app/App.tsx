@@ -15,10 +15,10 @@ export default class App extends Component<any, any> {
   render() {
     return (
       <div id="app">
-        <PageHeader headerText="[ nav here ]" />
+        <Router>
+          <PageHeader />
 
-        <AppBody>
-          <Router>
+          <AppBody>
             <Switch>
               <Route path="/test">
                 <Test />
@@ -28,8 +28,8 @@ export default class App extends Component<any, any> {
                 <Home />
               </Route>
             </Switch>
-          </Router>
-        </AppBody>
+          </AppBody>
+        </Router>
       </div>
     );
   }
