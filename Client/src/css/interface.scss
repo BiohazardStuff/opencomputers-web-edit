@@ -8,12 +8,11 @@ button {
   color: white;
   cursor: pointer;
   height: $element-height;
+ outline: none;
   padding: 0 10px;
   transition: background .3s ease;
 
-  &:focus {
-    outline: none;
-  }
+
 
   &:hover {
     background: $secondary-color;
@@ -29,10 +28,11 @@ button {
 input {
   border: 1px solid $primary-color;
   height: $element-height;
+   outline: none;
   padding: 0.5em;
 
+  &:hover,
   &:focus {
-    outline: none;
     border-color: $secondary-color;
   }
 

@@ -1,13 +1,13 @@
 @import "src/css/theme";
 
 .page-header {
-  background: $background-color;
+  background: $brand-background-color;
   display: flex;
   height: 3em;
 }
 
 .brand-text {
-  color: $primary-color;
+  color: $brand-foreground-color;
   font-size: 1.5em;
   font-weight: 600;
 
@@ -16,6 +16,6 @@
 }
 
 .header-text {
-  color: $secondary-color;
+  color: $brand-foreground-color;
   font-size: 1.1em;
 }
