@@ -1,5 +1,8 @@
 @import "src/css/theme";
 
+$body-width: 1176px;
+$header-height: 3em;
+
 html, body, #root, #app {
   min-height: 100vh;
 }
@@ -14,7 +17,7 @@ html, body, #root, #app {
   flex-direction: column;
 
   // Accommodate header + 0.5em spacing top and bottom
-  padding: 3.5em 0 0.5em;
+  padding: calc(#{$header-height} + 0.5em) 0 0.5em;
 
   background: $background-color;
   color: $foreground-color;
@@ -30,5 +33,12 @@ html, body, #root, #app {
 
   // Maintain reasonable with
   width: 100%;
-  max-width: 1176px;
+  max-width: $body-width;
+}
+
+@media (max-width: $body-width) {
+  #app {
+    // Remove 0.5em vertical padding so that app-body takes all available space
+    padding: $header-height 0 0;
+  }
 }
