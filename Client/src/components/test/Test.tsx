@@ -38,7 +38,7 @@ export default class Test extends Component<any, any> {
         <div className={ styles.labeledField }>
           <label htmlFor="access-code">Access Code</label>
           <input id="access-code" className="inline-button" ref={ this._accessCodeInput } />
-          <button type="button" id="submit-access-code" onClick={ this.onAccessCodeSubmit }>Submit</button>
+          <button type="button" id="submit-access-code" onClick={ this.onAccessCodeSubmit }>Check</button>
         </div>
 
         <div className={ styles.labeledField }>

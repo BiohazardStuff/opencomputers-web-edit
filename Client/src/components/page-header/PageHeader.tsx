@@ -32,7 +32,9 @@ class PageHeader extends Component<RouteComponentProps<any>> {
         </VerticalAlign>
 
         <VerticalAlign>
-          <div className={ styles.brandText }>OpenComputers Web Edit</div>
+          <div className={ styles.brandText }>
+            <Link to="/">OpenComputers Web Edit</Link>
+          </div>
         </VerticalAlign>
 
         <nav className={ styles.headerNavigation }>
