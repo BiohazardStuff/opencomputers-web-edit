@@ -13,6 +13,10 @@ export default class WebEditClient {
     this._socketClient.onmessage = event => this.onMessage(event);
   }
 
+  public disconnect(): void {
+    this._socketClient?.close();
+  }
+
   // region Private Access
 
   public getUUID(): string|undefined {

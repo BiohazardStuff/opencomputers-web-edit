@@ -1,18 +1,16 @@
-import { Component, ComponentProps, ReactNode, RefObject } from "react";
+import { ComponentProps, ReactNode, RefObject } from "react";
 import * as React from "react";
 
-import WebEditClient from "../../../classes/web-edit-client";
-
 import * as styles from "./Test.module.scss";
+
+import ContextComponent from "../../../classes/util/context-component";
 import Fieldset from "../../interface/fieldset/Fieldset";
 
-export default class Test extends Component {
+export default class Test extends ContextComponent {
   private readonly _accessCodeInput: RefObject<HTMLInputElement>;
   private readonly _directoryPathInput: RefObject<HTMLInputElement>;
   private readonly _filePathInput: RefObject<HTMLInputElement>;
   private readonly _uuidOutput: RefObject<HTMLSpanElement>;
-
-  private _client: WebEditClient;
 
   constructor(props: ComponentProps<any>) {
     super(props);
@@ -21,12 +19,11 @@ export default class Test extends Component {
     this._directoryPathInput = React.createRef<HTMLInputElement>();
     this._filePathInput = React.createRef<HTMLInputElement>();
     this._uuidOutput = React.createRef<HTMLSpanElement>();
-
-    this._client = new WebEditClient();
-    this._client.onUUIDChanged = this.onUUIDChanged;
-
-    this._client.connect("ws://localhost:8080/web");
   }
+
+  public componentDidMount(): void {
+    this.context.client.onUUIDChanged = this.onUUIDChanged;
+  };
 
   public render(): ReactNode {
     return (
@@ -79,7 +76,7 @@ export default class Test extends Component {
     console.log(`UUID changed to ${ uuid }`);
 
     if (this._uuidOutput.current !== null) {
-      this._uuidOutput.current.innerHTML = uuid || "";
+      this._uuidOutput.current.innerHTML = uuid || "N/A";
     }
   };
 
@@ -92,7 +89,7 @@ export default class Test extends Component {
 
     const accessCode = this._accessCodeInput.current.value.trim();
 
-    this._client.sendMessage(
+    this.context.client.sendMessage(
       "check_access_code",
       {
         accessCode,
@@ -110,7 +107,7 @@ export default class Test extends Component {
 
     const path = this._directoryPathInput.current.value.trim();
 
-    this._client.sendMessage(
+    this.context.client.sendMessage(
       "pull_directory",
       {
         path,
@@ -128,7 +125,7 @@ export default class Test extends Component {
 
     const path = this._filePathInput.current.value.trim();
 
-    this._client.sendMessage(
+    this.context.client.sendMessage(
       "pull_file",
       {
         path,
