@@ -1,0 +1,32 @@
+@import "src/css/theme";
+
+.labeled-element {
+  padding: 5px 0;
+
+  label {
+    color: $primary-color-dark;
+    font-weight: bold;
+    font-size: 0.95em;
+    padding-bottom: 0.15em;
+  }
+
+  &.inline label {
+    padding-right: 5px;
+
+    &:after {
+      content: ":";
+    }
+  }
+
+  &:not(.inline) label {
+    display: block;
+  }
+
+  &:first-child {
+    padding-top: 0;
+  }
+
+  &:last-child {
+    padding-bottom: 0;
+  }
+}

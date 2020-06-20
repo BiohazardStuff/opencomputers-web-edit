@@ -2,7 +2,6 @@
 @import "utils";
 
 $element-height: 2em;
-$button-width: 5em;
 
 fieldset {
   border-radius: 2px;
@@ -65,38 +64,5 @@ button {
     color: gainsboro;
     cursor: default;
     background: $background-alt-color;
-  }
-}
-
-.labeled-field {
-  padding: 5px 0;
-
-  label {
-    color: $primary-color-dark;
-    font-weight: bold;
-    font-size: 0.95em;
-    padding-bottom: 0.15em;
-  }
-
-  &:not(.inline) label {
-    display: block;
-  }
-
-  &:first-child {
-    padding-top: 0;
-  }
-
-  &:last-child {
-    padding-bottom: 0;
-  }
-}
-
-.inline-button-field {
-  input {
-    border-right: none;
-  }
-
-  button {
-    width: $button-width;
   }
 }
