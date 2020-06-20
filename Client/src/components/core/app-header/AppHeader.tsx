@@ -2,20 +2,20 @@ import { Component, ReactNode } from "react";
 import * as React from "react";
 import { Link, RouteComponentProps, withRouter } from "react-router-dom";
 
-import VerticalAlign from "../vertical-align/VerticalAlign";
+import VerticalAlign from "../../util/vertical-align/VerticalAlign";
 
-import * as styles from "./PageHeader.module.scss";
-import logo from "../../img/logo_flat.png";
-import { NavData } from "../../classes/route-manager";
+import * as styles from "./AppHeader.module.scss";
+import logo from "../../../img/logo_flat.png";
+import { NavData } from "../../../classes/route-manager";
 
 interface props extends RouteComponentProps {
   navData: NavData[],
 }
 
-class PageHeader extends Component<props> {
+class AppHeader extends Component<props> {
   public render(): ReactNode {
     return (
-      <div className={ styles.pageHeader }>
+      <div className={ styles.appHeader }>
         <VerticalAlign>
           <img src={ logo } alt="OpenComputers Web Edit Logo" className={ styles.brandLogo } />
         </VerticalAlign>
@@ -51,4 +51,4 @@ class PageHeader extends Component<props> {
   };
 }
 
-export default withRouter(PageHeader);
+export default withRouter(AppHeader);

@@ -2,11 +2,11 @@ import * as React from "react";
 import { Component } from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 
-import Home from "../home/Home";
-import Test from "../test/Test";
+import Home from "../../page/home/Home";
+import Test from "../../page/test/Test";
 import AppBody from "../app-body/AppBody";
-import PageHeader from "../page-header/PageHeader";
-import RouteManager from "../../classes/route-manager";
+import PageHeader from "../app-header/AppHeader";
+import RouteManager from "../../../classes/route-manager";
 
 const routeManager: RouteManager = new RouteManager();
 

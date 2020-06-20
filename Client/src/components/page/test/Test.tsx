@@ -1,10 +1,10 @@
 import { Component, ComponentProps, ReactNode, RefObject } from "react";
 import * as React from "react";
 
-import WebEditClient from "../../classes/web-edit-client";
+import WebEditClient from "../../../classes/web-edit-client";
 
 import * as styles from "./Test.module.scss";
-import Fieldset from "../interface/Fieldset/Fieldset";
+import Fieldset from "../../interface/fieldset/Fieldset";
 
 export default class Test extends Component {
   private readonly _accessCodeInput: RefObject<HTMLInputElement>;
