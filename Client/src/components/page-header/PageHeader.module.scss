@@ -19,7 +19,7 @@
   padding: 0 2.5em 0 0.5em;
 
   > a {
-    color: $brand-foreground-color;
+    color: $foreground-color-light;
     font-size: 1.5em;
     font-weight: 600;
     text-decoration: none;
@@ -31,7 +31,7 @@
 }
 
 .header-navigation-item {
-  color: $brand-foreground-color;
+  color: $foreground-color-light;
   display: inline-block;
   font-size: 1.1em;
   height: 100%;

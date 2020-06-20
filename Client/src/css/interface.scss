@@ -1,6 +1,50 @@
 @import "theme";
+@import "utils";
 
 $element-height: 2em;
+$button-width: 5em;
+
+fieldset {
+  border-radius: 2px;
+  position: relative;
+
+  // 1.8em to accommodate for internal legend
+  padding: calc(1.8em + 5px) 5px 5px;
+
+  @include border-thin($background-color);
+
+  legend {
+    left: -1px;
+    position: absolute;
+    top: -1px;
+
+    background: $primary-color;
+    border-bottom: 1px solid $background-color;
+    border-radius: 2px 2px 0 0;
+    color: $foreground-color-light;
+    font-weight: bold;
+    padding: 0.3em;
+
+    // 100% + 1px border either side
+    width: calc(100% + 2px);
+  }
+}
+
+input, textarea {
+  @include border-thin($primary-color);
+
+  outline: none;
+  padding: 0.5em;
+
+  &:hover,
+  &:focus {
+    border-color: $secondary-color;
+  }
+}
+
+input {
+  height: $element-height;
+}
 
 button {
   border: none;
@@ -8,10 +52,9 @@ button {
   color: white;
   cursor: pointer;
   height: $element-height;
- outline: none;
+  outline: none;
   padding: 0 10px;
   transition: background .3s ease;
-
 
 
   &:hover {
@@ -25,18 +68,35 @@ button {
   }
 }
 
-input {
-  border: 1px solid $primary-color;
-  height: $element-height;
-   outline: none;
-  padding: 0.5em;
+.labeled-field {
+  padding: 5px 0;
 
-  &:hover,
-  &:focus {
-    border-color: $secondary-color;
+  label {
+    color: $primary-color-dark;
+    font-weight: bold;
+    font-size: 0.95em;
+    padding-bottom: 0.15em;
   }
 
-  &.inline-button {
+  &:not(.inline) label {
+    display: block;
+  }
+
+  &:first-child {
+    padding-top: 0;
+  }
+
+  &:last-child {
+    padding-bottom: 0;
+  }
+}
+
+.inline-button-field {
+  input {
     border-right: none;
+  }
+
+  button {
+    width: $button-width;
   }
 }

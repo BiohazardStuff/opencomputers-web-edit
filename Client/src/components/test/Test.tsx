@@ -4,6 +4,7 @@ import * as React from "react";
 import WebEditClient from "../../classes/web-edit-client";
 
 import * as styles from "./Test.module.scss";
+import Fieldset from "../interface/Fieldset/Fieldset";
 
 export default class Test extends Component {
   private readonly _accessCodeInput: RefObject<HTMLInputElement>;
@@ -30,35 +31,43 @@ export default class Test extends Component {
   public render(): ReactNode {
     return (
       <div className={ styles.test }>
-        <div className={ styles.labeledField }>
-          <label>Computer UUID</label>
-          <span id="computer-uuid" ref={ this._uuidOutput } />
+        <div className="labeled-field inline">
+          <label>Computer UUID: </label>
+          <span id="computer-uuid" ref={ this._uuidOutput }>N/A</span>
         </div>
 
-        <div className={ styles.labeledField }>
-          <label htmlFor="access-code">Access Code</label>
-          <input id="access-code" className="inline-button" ref={ this._accessCodeInput } />
-          <button type="button" id="submit-access-code" onClick={ this.onAccessCodeSubmit }>Check</button>
-        </div>
+        <Fieldset label="Client Actions">
+          <div className="labeled-field">
+            <label htmlFor="access-code">Access Code</label>
+            <div className="inline-button-field">
+              <input id="access-code" ref={ this._accessCodeInput } />
+              <button type="button" id="submit-access-code" onClick={ this.onAccessCodeSubmit }>Check</button>
+            </div>
+          </div>
 
-        <div className={ styles.labeledField }>
-          <label htmlFor="directory-path">Directory</label>
-          <input id="directory-path" defaultValue="/" className="inline-button"  ref={ this._directoryPathInput } />
-          <button type="button" id="submit-directory-path" onClick={ this.onDirectoryPathSubmit }>Pull</button>
-        </div>
+          <div className="labeled-field">
+            <label htmlFor="directory-path">Directory</label>
+            <div className="inline-button-field">
+              <input id="directory-path" defaultValue="/" ref={ this._directoryPathInput } />
+              <button type="button" id="submit-directory-path" onClick={ this.onDirectoryPathSubmit }>Pull</button>
+            </div>
+          </div>
 
-        <div className={ styles.labeledField }>
-          <label htmlFor="file-path">File</label>
-          <input id="file-path" className="inline-button"  ref={ this._filePathInput } />
-          <button type="button" id="submit-file-path" onClick={ this.onFilePathSubmit }>Pull</button>
-        </div>
+          <div className="labeled-field">
+            <label htmlFor="file-path">File</label>
+            <div className="inline-button-field">
+              <input id="file-path" ref={ this._filePathInput } />
+              <button type="button" id="submit-file-path" onClick={ this.onFilePathSubmit }>Pull</button>
+            </div>
+          </div>
 
-        <div className={ styles.labeledField }>
-          <label htmlFor="file-content">File Content</label>
-          <textarea readOnly id="file-content" className={ styles.fileContent } />
-        </div>
+          <div className="labeled-field">
+            <label htmlFor="file-content">File Content</label>
+            <textarea readOnly id="file-content" className={ styles.fileContent } />
+          </div>
+        </Fieldset>
 
-        <div className={ styles.labeledField }>
+        <div className="labeled-field">
           <label>Message Log</label>
           <div id="message-log" className={ styles.messageLog } />
         </div>

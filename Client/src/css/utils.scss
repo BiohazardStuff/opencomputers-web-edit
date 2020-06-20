@@ -1,0 +1,7 @@
+@mixin border-solid($thickness, $color) {
+  border: $thickness solid $color;
+}
+
+@mixin border-thin($color) {
+  @include border-solid(1px, $color);
+}

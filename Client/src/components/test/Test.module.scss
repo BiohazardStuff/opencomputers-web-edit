@@ -2,18 +2,9 @@
 
 .test {}
 
-.labeled-field {
-  padding: 5px;
-
-  label {
-    font-weight: bold;
-    margin-right: 5px;
-  }
-}
-
 .file-content {
   width: 100%;
-  height: 200px;
+  min-height: 200px;
   resize: vertical;
 }
 
