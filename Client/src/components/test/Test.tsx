@@ -5,7 +5,7 @@ import WebEditClient from "../../classes/web-edit-client";
 
 import * as styles from "./Test.module.scss";
 
-export default class Test extends Component<any, any> {
+export default class Test extends Component {
   private readonly _accessCodeInput: RefObject<HTMLInputElement>;
   private readonly _directoryPathInput: RefObject<HTMLInputElement>;
   private readonly _filePathInput: RefObject<HTMLInputElement>;

@@ -6,24 +6,13 @@ import VerticalAlign from "../vertical-align/VerticalAlign";
 
 import * as styles from "./PageHeader.module.scss";
 import logo from "../../img/logo_flat.png";
+import { NavData } from "../../classes/route-manager";
 
-interface NavItem {
-  label: string,
-  to: string,
+interface props extends RouteComponentProps {
+  navData: NavData[],
 }
 
-const navItems: NavItem[] = [
-  {
-    label: "Home",
-    to: "/",
-  },
-  {
-    label: "Test Tools",
-    to: "/test",
-  },
-];
-
-class PageHeader extends Component<RouteComponentProps<any>> {
+class PageHeader extends Component<props> {
   public render(): ReactNode {
     return (
       <div className={ styles.pageHeader }>
@@ -47,15 +36,15 @@ class PageHeader extends Component<RouteComponentProps<any>> {
   private outputNavItems = (): ReactNode[] => {
     const pathname: string = this.props.location.pathname;
 
-    return navItems.map((navItem: NavItem, index: number) => {
+    return this.props.navData.map((navData: NavData, index: number) => {
       let className: string = styles.headerNavigationItem;
-      if (pathname === navItem.to) {
+      if (pathname === navData.to) {
         className += ` ${ styles.headerNavigationItemCurrent }`;
       }
 
       return (
-        <Link to={ navItem.to } key={ `key_${ index }` } className={ className }>
-          <VerticalAlign>{ navItem.label }</VerticalAlign>
+        <Link to={ navData.to } key={ `nav_${ index }` } className={ className }>
+          <VerticalAlign>{ navData.label }</VerticalAlign>
         </Link>
       );
     });
