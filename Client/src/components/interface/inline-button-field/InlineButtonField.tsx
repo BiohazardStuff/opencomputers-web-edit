@@ -1,6 +1,6 @@
 import { Component, createRef, ReactNode, RefObject } from "react";
 import * as React from "react";
-import { v4 as uuidv4} from "uuid";
+import { v4 as uuidv4 } from "uuid";
 
 import * as styles from "./InlineButtonField.module.scss";
 
@@ -8,6 +8,7 @@ import LabeledElement from "../labeled-element/LabeledElement";
 
 interface props {
   label?: string,
+  disabled?: boolean,
 
   buttonLabel: string,
   onSubmit?: (value: string, event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
@@ -30,8 +31,18 @@ export default class InlineButtonField extends Component<props> {
   public render(): ReactNode {
     const node: ReactNode = (
       <div className={ styles.inlineButtonField }>
-        <input id={ this._inputId } ref={ this._inputReference } onKeyUp={ this.onInputKeyUp } />
-        <button type="button" ref={ this._buttonReference } onClick={ this.onButtonClick }>
+        <input
+          id={ this._inputId }
+          ref={ this._inputReference }
+          onKeyUp={ this.onInputKeyUp }
+          disabled={ this.props.disabled }
+        />
+        <button
+          type="button"
+          ref={ this._buttonReference }
+          onClick={ this.onButtonClick }
+          disabled={ this.props.disabled }
+        >
           { this.props.buttonLabel }
         </button>
       </div>

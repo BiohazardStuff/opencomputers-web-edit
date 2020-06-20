@@ -8,11 +8,19 @@ import Fieldset from "../../interface/fieldset/Fieldset";
 import LabeledElement from "../../interface/labeled-element/LabeledElement";
 import InlineButtonField from "../../interface/inline-button-field/InlineButtonField";
 
-export default class Test extends ContextComponent {
+interface state {
+  pullDisabled: boolean,
+}
+
+export default class Test extends ContextComponent<any, state> {
   private readonly _uuidOutput: RefObject<HTMLSpanElement>;
 
   constructor(props: ComponentProps<any>) {
     super(props);
+
+    this.state = {
+      pullDisabled: true,
+    };
 
     this._uuidOutput = React.createRef<HTMLSpanElement>();
   }
@@ -39,12 +47,14 @@ export default class Test extends ContextComponent {
             label="Directory"
             buttonLabel="Pull"
             onSubmit={ this.onDirectoryPathSubmit }
+            disabled={ this.state.pullDisabled }
           />
 
           <InlineButtonField
             label="File"
             buttonLabel="Pull"
             onSubmit={ this.onFilePathSubmit }
+            disabled={ this.state.pullDisabled }
           />
 
           <LabeledElement label="File Content" for="file-content">
@@ -61,6 +71,8 @@ export default class Test extends ContextComponent {
 
   private onUUIDChanged = (uuid: string|undefined): void => {
     console.log(`UUID changed to ${ uuid }`);
+
+    this.setState({pullDisabled: uuid === undefined});
 
     if (this._uuidOutput.current !== null) {
       this._uuidOutput.current.innerHTML = uuid || "N/A";
