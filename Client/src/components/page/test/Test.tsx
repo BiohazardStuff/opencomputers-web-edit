@@ -1,4 +1,4 @@
-import { ComponentProps, ReactNode, RefObject } from "react";
+import { ComponentProps, ReactNode } from "react";
 import * as React from "react";
 
 import * as styles from "./Test.module.scss";
@@ -7,33 +7,30 @@ import ContextComponent from "../../../classes/util/context-component";
 import Fieldset from "../../interface/fieldset/Fieldset";
 import LabeledElement from "../../interface/labeled-element/LabeledElement";
 import InlineButtonField from "../../interface/inline-button-field/InlineButtonField";
+import { AppContextType } from "../../core/context-provider/ContextProvider";
 
 interface state {
-  pullDisabled: boolean,
+  clientUUID: string|undefined,
 }
 
 export default class Test extends ContextComponent<any, state> {
-  private readonly _uuidOutput: RefObject<HTMLSpanElement>;
-
-  constructor(props: ComponentProps<any>) {
-    super(props);
+  constructor(props: ComponentProps<any>, context: AppContextType) {
+    super(props, context);
 
     this.state = {
-      pullDisabled: true,
+      clientUUID: this.context.client.getUUID(),
     };
 
-    this._uuidOutput = React.createRef<HTMLSpanElement>();
+    this.context.client.onUUIDChanged = this.onUUIDChanged;
   }
 
-  public componentDidMount(): void {
-    this.context.client.onUUIDChanged = this.onUUIDChanged;
-  };
-
   public render(): ReactNode {
+    const pullDisabled = this.state.clientUUID === undefined;
+
     return (
       <div className={ styles.test }>
         <LabeledElement label="Computer UUID" inline>
-          <span id="computer-uuid" ref={ this._uuidOutput }>N/A</span>
+          <span id="computer-uuid">{ this.state.clientUUID || "N/A" }</span>
         </LabeledElement>
 
         <Fieldset label="Client Actions">
@@ -47,14 +44,14 @@ export default class Test extends ContextComponent<any, state> {
             label="Directory"
             buttonLabel="Pull"
             onSubmit={ this.onDirectoryPathSubmit }
-            disabled={ this.state.pullDisabled }
+            disabled={ pullDisabled }
           />
 
           <InlineButtonField
             label="File"
             buttonLabel="Pull"
             onSubmit={ this.onFilePathSubmit }
-            disabled={ this.state.pullDisabled }
+            disabled={ pullDisabled }
           />
 
           <LabeledElement label="File Content" for="file-content">
@@ -72,11 +69,7 @@ export default class Test extends ContextComponent<any, state> {
   private onUUIDChanged = (uuid: string|undefined): void => {
     console.log(`UUID changed to ${ uuid }`);
 
-    this.setState({pullDisabled: uuid === undefined});
-
-    if (this._uuidOutput.current !== null) {
-      this._uuidOutput.current.innerHTML = uuid || "N/A";
-    }
+    this.setState({ clientUUID: uuid });
   };
 
   private onAccessCodeSubmit = (accessCode: string): void => {
