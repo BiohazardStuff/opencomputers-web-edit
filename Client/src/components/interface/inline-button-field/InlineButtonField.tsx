@@ -42,6 +42,7 @@ export default class InlineButtonField extends Component<props> {
           ref={ this._buttonReference }
           onClick={ this.onButtonClick }
           disabled={ this.props.disabled }
+          tabIndex={-1}
         >
           { this.props.buttonLabel }
         </button>
