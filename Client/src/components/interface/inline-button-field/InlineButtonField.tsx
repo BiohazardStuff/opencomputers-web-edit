@@ -7,8 +7,9 @@ import * as styles from "./InlineButtonField.module.scss";
 import LabeledElement from "../labeled-element/LabeledElement";
 
 interface props {
-  label?: string,
   disabled?: boolean,
+  label?: string,
+  inputClassName?: string,
 
   buttonLabel: string,
   onSubmit?: (value: string, event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
@@ -34,6 +35,7 @@ export default class InlineButtonField extends Component<props> {
         <input
           id={ this._inputId }
           ref={ this._inputReference }
+          className={ this.props.inputClassName }
           onKeyUp={ this.onInputKeyUp }
           disabled={ this.props.disabled }
         />
@@ -42,7 +44,7 @@ export default class InlineButtonField extends Component<props> {
           ref={ this._buttonReference }
           onClick={ this.onButtonClick }
           disabled={ this.props.disabled }
-          tabIndex={-1}
+          tabIndex={ -1 }
         >
           { this.props.buttonLabel }
         </button>

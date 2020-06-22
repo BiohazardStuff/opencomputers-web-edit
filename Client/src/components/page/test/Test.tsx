@@ -37,6 +37,7 @@ export default class Test extends ContextComponent<any, state> {
           <InlineButtonField
             label="Access Code"
             buttonLabel="Check"
+            inputClassName="uppercase"
             onSubmit={ this.onAccessCodeSubmit }
           />
 
@@ -76,7 +77,7 @@ export default class Test extends ContextComponent<any, state> {
     this.context.client.sendMessage(
       "check_access_code",
       {
-        accessCode,
+        accessCode: accessCode.toUpperCase(),
       }
     );
   };
