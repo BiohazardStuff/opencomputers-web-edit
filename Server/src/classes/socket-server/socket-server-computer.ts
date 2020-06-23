@@ -2,10 +2,11 @@ import SocketServer from "./socket-server";
 import { PayloadBase } from "../../constant/interfaces/client-payloads";
 import SocketServerManager from "../socket-server-manager";
 import { HandshakeHandlers } from "../../modules/handshake-handlers";
-import SocketClient from "../socket-client";
 import Computer from "../container/computer";
 import MessageAction from "../../constant/enums/message-action";
 import DestinationServer from "../../constant/enums/destination-server";
+import SocketClient from "../socket-client/socket-client";
+import MockComputerClient from "../socket-client/mock-computer-client";
 
 export default class SocketServerComputer extends SocketServer {
   private _computers: Map<string, Computer>;
@@ -25,6 +26,8 @@ export default class SocketServerComputer extends SocketServer {
 
     this.registerEventHandler(MessageAction.CONFIRM_CONNECTION, HandshakeHandlers.onConfirmConnection);
     this.registerEventHandler(MessageAction.AUTHENTICATE, HandshakeHandlers.onAuthenticate);
+
+    this.configureMockClient();
   }
 
   // region Private Variable Access
@@ -52,6 +55,18 @@ export default class SocketServerComputer extends SocketServer {
   }
 
   // endregion
+
+  private configureMockClient(): void {
+    if (process.env.MOCK_COMPUTER_CLIENT !== "true") {
+      return;
+    }
+
+    const computer: Computer = new Computer("12345678-1234-1234-1234-1234567890AB", "123ABC");
+    const client: SocketClient = new MockComputerClient(this, computer);
+
+    this.addClient(client, computer.uuid);
+    this.addComputer(computer);
+  }
 
   protected onMessage(client: SocketClient, message: PayloadBase): void {
 

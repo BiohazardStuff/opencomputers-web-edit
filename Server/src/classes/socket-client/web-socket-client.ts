@@ -1,9 +1,10 @@
 import * as WebSocket from "ws";
 
-import ErrorCode from "../constant/enums/error-code";
-import MessageAction from "../constant/enums/message-action";
+import ErrorCode from "../../constant/enums/error-code";
+import MessageAction from "../../constant/enums/message-action";
+import SocketClient from "./socket-client";
 
-export default class SocketClient {
+export default class WebSocketClient implements SocketClient {
   constructor(private _socketClient: WebSocket) {
   }
 

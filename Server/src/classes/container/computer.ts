@@ -5,8 +5,8 @@ export default class Computer {
   public readonly accessCode: string;
   public readonly authToken: string;
 
-  constructor(public readonly uuid: string) {
-    this.accessCode = StringUtil.randomCode(6);
+  constructor(public readonly uuid: string, accessCode?: string) {
+    this.accessCode = accessCode || StringUtil.randomCode(6);
 
     this.authToken = AuthTokenUtil.generate({
       uuid: this.uuid,

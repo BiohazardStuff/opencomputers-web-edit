@@ -5,10 +5,11 @@ import SocketServerManager from "../socket-server-manager";
 import { PayloadBase } from "../../constant/interfaces/client-payloads";
 import { IncomingMessage } from "http";
 import { Socket } from "net";
-import SocketClient from "../socket-client";
+import WebSocketClient from "../socket-client/web-socket-client";
 import Logger from "../logger";
 import DestinationServer from "../../constant/enums/destination-server";
 import MessageAction from "../../constant/enums/message-action";
+import SocketClient from "../socket-client/socket-client";
 
 
 export default abstract class SocketServer {
@@ -63,6 +64,10 @@ export default abstract class SocketServer {
     return JSON.parse(rawMessage);
   }
 
+  public emulateMessage(client: SocketClient, message: PayloadBase): void {
+    this.onMessageInternal(client, message);
+  }
+
   // region Event Logic
 
   protected registerEventHandler(action: MessageAction, callback: Function): void {
@@ -111,7 +116,7 @@ export default abstract class SocketServer {
   private onConnectionInternal(webSocketClient: WebSocket): void {
     Logger.info("Client Connected");
 
-    const client: SocketClient = new SocketClient(webSocketClient);
+    const client: SocketClient = new WebSocketClient(webSocketClient);
 
     webSocketClient.on(
       "message",

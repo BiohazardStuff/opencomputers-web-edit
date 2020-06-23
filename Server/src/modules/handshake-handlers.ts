@@ -1,9 +1,9 @@
 import { AuthenticatePayload, ConfirmConnectionPayload } from "../constant/interfaces/client-payloads";
-import SocketClient from "../classes/socket-client";
 import Logger from "../classes/logger";
 import SocketServerComputer from "../classes/socket-server/socket-server-computer";
 import Computer from "../classes/container/computer";
 import MessageAction from "../constant/enums/message-action";
+import SocketClient from "../classes/socket-client/socket-client";
 
 export class HandshakeHandlers {
   //region Message Event Handlers

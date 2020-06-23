@@ -8,8 +8,8 @@ import SocketServerWeb from "./socket-server/socket-server-web";
 import SocketServer from "./socket-server/socket-server";
 import Computer from "./container/computer";
 import DestinationServer from "../constant/enums/destination-server";
-import SocketClient from "./socket-client";
 import { PayloadBase } from "../constant/interfaces/client-payloads";
+import SocketClient from "./socket-client/socket-client";
 
 export default class SocketServerManager {
   private _destinationMap: Map<DestinationServer, SocketServer>;
@@ -83,7 +83,7 @@ export default class SocketServerManager {
     destinationClient.sendMessage(
       message.action,
       message.data
-    )
+    );
 
     // destinationServer.emulateMessage(destinationClient, message);
   }
