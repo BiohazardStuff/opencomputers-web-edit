@@ -1,9 +1,25 @@
+export interface DirectoryItem {
+  path: string,
+  directory: boolean,
+}
+
+export type DirectoryPushCallback = (content: DirectoryItem[]) => void;
+export type FilePushCallback = (content: string) => void;
+
 export default class WebEditClient {
   private _socketClient: WebSocket;
   private _computerUUID: string;
 
+  private readonly _directoryPushCallbacks: Map<string, DirectoryPushCallback>;
+  private readonly _filePushCallbacks: Map<string, FilePushCallback>;
+
   public onConnected: (client: WebEditClient) => void;
   public onUUIDChanged: (newUUID: string|undefined, oldUUID: string|undefined) => void;
+
+  constructor() {
+    this._directoryPushCallbacks = new Map<string, DirectoryPushCallback>();
+    this._filePushCallbacks = new Map<string, FilePushCallback>();
+  }
 
   public connect(url: string): void {
     this._socketClient = new WebSocket(url);
@@ -31,6 +47,38 @@ export default class WebEditClient {
 
     if (this.onUUIDChanged !== undefined) {
       this.onUUIDChanged(this._computerUUID, oldUUID);
+    }
+  }
+
+  public isConfirmed(): boolean {
+    return this.getUUID() !== undefined;
+  }
+
+  // endregion
+
+  // region Callback Handling
+
+  public clearCallbacks() {
+    this._directoryPushCallbacks.clear();
+    this._filePushCallbacks.clear();
+  }
+
+  public registerDirectoryCallback(path: string, callback: DirectoryPushCallback) {
+    this._directoryPushCallbacks.set(path, callback);
+  }
+
+  public registerFileCallback(path: string, callback: FilePushCallback) {
+    this._filePushCallbacks.set(path, callback);
+  }
+
+  private static getCallbackFunction(map: Map<string, Function>, path: string): Function|undefined {
+    return map.get("*") || map.get(path);
+  }
+
+  private static executeCallbackFunction(map: Map<string, Function>, path: string, content: any) {
+    const callback: Function|undefined = WebEditClient.getCallbackFunction(map, path);
+    if (callback !== undefined) {
+      callback(content);
     }
   }
 
@@ -92,14 +140,12 @@ export default class WebEditClient {
         this.setUUID(data.uuid);
 
         break;
-      case "push_file":
-        const fileContentElement: HTMLElement|null = document.getElementById("file-content");
-        if (fileContentElement === null) {
-          return;
-        }
+      case "push_directory":
+        WebEditClient.executeCallbackFunction(this._directoryPushCallbacks, data.path, data.content);
 
-        const fileContentTextarea: HTMLTextAreaElement = fileContentElement as HTMLTextAreaElement;
-        fileContentTextarea.value = data.content;
+        break;
+      case "push_file":
+        WebEditClient.executeCallbackFunction(this._filePushCallbacks, data.path, data.content);
 
         break;
       case "error":

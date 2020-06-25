@@ -10,7 +10,8 @@ import InlineButtonField from "../../interface/inline-button-field/InlineButtonF
 import { AppContextType } from "../../core/context-provider/ContextProvider";
 
 interface state {
-  clientUUID: string|undefined,
+  clientUUID?: string,
+  fileContent: string
 }
 
 export default class Test extends ContextComponent<any, state> {
@@ -19,9 +20,11 @@ export default class Test extends ContextComponent<any, state> {
 
     this.state = {
       clientUUID: this.context.client.getUUID(),
+      fileContent: "",
     };
 
     this.context.client.onUUIDChanged = this.onUUIDChanged;
+    this.context.client.registerFileCallback("*", this.onFilePush);
   }
 
   public render(): ReactNode {
@@ -56,7 +59,7 @@ export default class Test extends ContextComponent<any, state> {
           />
 
           <LabeledElement label="File Content" for="file-content">
-            <textarea readOnly id="file-content" className={ styles.fileContent } />
+            <textarea readOnly id="file-content" className={ styles.fileContent } value={ this.state.fileContent } />
           </LabeledElement>
         </Fieldset>
 
@@ -71,6 +74,10 @@ export default class Test extends ContextComponent<any, state> {
     console.log(`UUID changed to ${ uuid }`);
 
     this.setState({ clientUUID: uuid });
+  };
+
+  private onFilePush = (content: string): void => {
+    this.setState({ fileContent: content });
   };
 
   private onAccessCodeSubmit = (accessCode: string): void => {

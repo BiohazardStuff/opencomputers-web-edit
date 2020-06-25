@@ -87,7 +87,8 @@ export default class MockComputerClient implements SocketClient {
     this.emulateMessage(
       MessageAction.PUSH_DIRECTORY,
       {
-        directory: directoryItems,
+        path,
+        content: directoryItems,
       }
     );
   }
@@ -101,6 +102,7 @@ export default class MockComputerClient implements SocketClient {
     this.emulateMessage(
       MessageAction.PUSH_FILE,
       {
+        path,
         content: fileContent,
       }
     )
