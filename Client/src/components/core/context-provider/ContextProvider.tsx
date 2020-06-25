@@ -5,10 +5,12 @@ import WebEditClient from "../../../classes/web-edit-client";
 
 export interface ApplicationContext {
   client: WebEditClient,
+  development: boolean,
 }
 
 const appContext: ApplicationContext = {
   client: new WebEditClient(),
+  development: process.env.NODE_ENV === "development",
 };
 
 export const AppContext: Context<ApplicationContext> = createContext<ApplicationContext>(appContext);

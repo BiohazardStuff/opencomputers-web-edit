@@ -2,6 +2,7 @@ export default class WebEditClient {
   private _socketClient: WebSocket;
   private _computerUUID: string;
 
+  public onConnected: (client: WebEditClient) => void;
   public onUUIDChanged: (newUUID: string|undefined, oldUUID: string|undefined) => void;
 
   public connect(url: string): void {
@@ -81,6 +82,10 @@ export default class WebEditClient {
     switch (message.action) {
       case "connected":
         console.log("Received connection confirmation from server");
+
+        if (this.onConnected !== undefined) {
+          this.onConnected(this);
+        }
 
         break;
       case "confirm_access_code":

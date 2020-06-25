@@ -3,22 +3,27 @@ import * as path from "path";
 // Adds devServer field to webpack Configuration interface
 import "webpack-dev-server";
 
-import { Configuration, RuleSetQuery } from "webpack";
+import { Configuration, EnvironmentPlugin, RuleSetQuery } from "webpack";
 import * as HtmlWebpackPlugin from "html-webpack-plugin";
+import * as dotenv from "dotenv";
 
-function cssLoaderOptions(modules: boolean, sourceMap: boolean): RuleSetQuery {
+dotenv.config();
+
+function cssLoaderOptions(modules: boolean, development: boolean): RuleSetQuery {
   const options: RuleSetQuery = {
-    sourceMap,
+    sourceMap: development,
 
     importLoaders: 2,
     localsConvention: "camelCaseOnly",
   };
 
-  // todo: this will need an env check to switch between setting the pattern below for dev vs true for prod
   if (modules) {
-    options.modules = {
-      localIdentName: "[path][name]__[local]",
-    };
+    options.modules = (development ?
+        {
+          localIdentName: "[path][name]__[local]",
+        }
+        : true
+    );
   }
 
   return options;
@@ -30,8 +35,10 @@ function sassLoaderOptions(sourceMap: boolean): RuleSetQuery {
   };
 }
 
+const development: boolean = process.env.NODE_ENV === "development";
+
 const config: Configuration = {
-  mode: "development",
+  mode: (development ? "development" : "production"),
   devtool: "inline-source-map",
 
   entry: "./src/index.tsx",
@@ -80,11 +87,11 @@ const config: Configuration = {
           "style-loader",
           {
             loader: "css-loader",
-            options: cssLoaderOptions(false, true),
+            options: cssLoaderOptions(false, development),
           },
           {
             loader: "sass-loader",
-            options: sassLoaderOptions(true),
+            options: sassLoaderOptions(development),
           },
         ],
       },
@@ -94,11 +101,11 @@ const config: Configuration = {
           "style-loader",
           {
             loader: "css-loader",
-            options: cssLoaderOptions(true, true),
+            options: cssLoaderOptions(true, development),
           },
           {
             loader: "sass-loader",
-            options: sassLoaderOptions(true),
+            options: sassLoaderOptions(development),
           },
         ],
       },
@@ -113,7 +120,10 @@ const config: Configuration = {
     new HtmlWebpackPlugin({
       template: "src/index.html",
       favicon: "src/favicon.ico",
-    })
+    }),
+    new EnvironmentPlugin({
+      NODE_ENV: "production",
+    }),
   ],
 
   externals: {

@@ -42,6 +42,17 @@ export default class App extends ContextComponent {
   }
 
   public componentDidMount(): void {
+    if (this.context.development) {
+      this.context.client.onConnected = client => {
+        client.sendMessage(
+          "check_access_code",
+          {
+            accessCode: "123ABC",
+          }
+        );
+      };
+    }
+
     this.context.client.connect("ws://localhost:8080/web");
   }
 
