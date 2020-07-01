@@ -1,3 +1,16 @@
+@import "src/css/variables";
+
 .file-tree-root {
+  position: absolute;
+  height: calc(100% - (#{$header-height} + (#{$body-padding} * 2) + (#{$body-content-padding} * 2)));
+
+  overflow: auto;
+
+  width: 200px;
   user-select: none;
+}
+
+.file-tree-wrapper {
+  display: flex;
+  min-height: min-content;
 }

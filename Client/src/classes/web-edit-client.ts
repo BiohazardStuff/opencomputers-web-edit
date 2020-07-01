@@ -3,8 +3,8 @@ export interface DirectoryItem {
   directory: boolean,
 }
 
-export type DirectoryPushCallback = (content: DirectoryItem[]) => void;
-export type FilePushCallback = (content: string) => void;
+export type DirectoryPushCallback = (content: DirectoryItem[], path: string) => void;
+export type FilePushCallback = (content: string, path: string) => void;
 
 export default class WebEditClient {
   private _socketClient: WebSocket;
@@ -78,7 +78,7 @@ export default class WebEditClient {
   private static executeCallbackFunction(map: Map<string, Function>, path: string, content: any) {
     const callback: Function|undefined = WebEditClient.getCallbackFunction(map, path);
     if (callback !== undefined) {
-      callback(content);
+      callback(content, path);
     }
   }
 

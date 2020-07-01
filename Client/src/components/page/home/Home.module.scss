@@ -1,3 +1,11 @@
 .home {
+  display: flex;
+  flex-direction: row;
+}
 
+.code-editor-wrapper {
+  display: flex;
+  flex: 1;
+  height: 100%;
+  margin-left: 200px;
 }

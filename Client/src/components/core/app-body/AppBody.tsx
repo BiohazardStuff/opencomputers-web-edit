@@ -5,7 +5,9 @@ export default class AppBody extends Component {
   public render() {
     return (
       <div id="app-body">
-        { this.props.children }
+        <div id="app-body-content">
+          { this.props.children }
+        </div>
       </div>
     );
   }

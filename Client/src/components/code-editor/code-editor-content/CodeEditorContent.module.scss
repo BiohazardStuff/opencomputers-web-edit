@@ -1,0 +1,6 @@
+.code-editor-content {
+  height: 100%;
+
+  // Monaco Editor appears to have elements that extend outside the root element which causes a scroll bar on the body
+  overflow-y: hidden;
+}

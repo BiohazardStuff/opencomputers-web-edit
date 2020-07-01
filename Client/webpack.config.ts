@@ -113,6 +113,23 @@ const config: Configuration = {
         test: /\.(png|jpe?g|gif)$/,
         loader: "file-loader",
       },
+
+      // region Required for Monaco Editor
+      {
+        test: /\.css$/,
+        use: [
+          "style-loader",
+          {
+            loader: "css-loader",
+            options: cssLoaderOptions(false, development),
+          },
+        ],
+      },
+      {
+        test: /\.ttf$/,
+        loader: "file-loader",
+      },
+      // endregion
     ],
   },
 
@@ -132,4 +149,5 @@ const config: Configuration = {
   },
 };
 
+// noinspection JSUnusedGlobalSymbols
 export default config;
