@@ -9,7 +9,9 @@
 }
 
 .message-log {
+  overflow-y: auto;
   margin-top: 5px;
+  max-height: 1000px;
 
   p {
     margin: 2px 0;
