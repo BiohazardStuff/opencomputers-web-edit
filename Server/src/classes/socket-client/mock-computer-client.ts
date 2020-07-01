@@ -1,28 +1,21 @@
-import * as fs from "fs";
-import * as path from "path";
-
 import MessageAction from "../../constant/enums/message-action";
 import ErrorCode from "../../constant/enums/error-code";
 import SocketClient from "./socket-client";
 import SocketServer from "../socket-server/socket-server";
 import Computer from "../container/computer";
+import mockData from "../../mock-data/mock-socket-client";
 
 interface DirectoryItem {
   path: string,
   directory: boolean,
 }
 
-interface DirectoryTree {
+export interface DirectoryTree {
   [key: string]: DirectoryItem[]|undefined,
 }
 
-interface FileTree {
+export interface FileTree {
   [key: string]: string|undefined,
-}
-
-interface MockData {
-  directoryTree: DirectoryTree
-  fileTree: FileTree
 }
 
 export default class MockComputerClient implements SocketClient {
@@ -30,11 +23,6 @@ export default class MockComputerClient implements SocketClient {
   private readonly _fileTree: FileTree;
 
   constructor(private readonly _server: SocketServer, private readonly _computer: Computer) {
-    const mockDataPath: string = path.join(__dirname, "..", "..", "mock-data", "mock-socket-client.json");
-    const rawMockData: string = fs.readFileSync(mockDataPath).toString();
-
-    const mockData: MockData = JSON.parse(rawMockData);
-
     this._directoryTree = mockData.directoryTree;
     this._fileTree = mockData.fileTree;
   }
